@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.js"></script>
+		<style>
+			.choose-label {
+				margin-bottom: 10px;
+				margin-top: 10px;
+			}
+			.choose-time {
+				margin-bottom: 10px;
+			}
+			.count-btns button, .choose-time button {
+				width: 100px;
+				height: 28px;
+				margin-right: 4px;
+				margin-bottom: 10px;
+			}
+			.content {
+				padding: 10px 0;
+			}
+			button {
+				outline: none;
+				box-shadow: none;
+				border-style: none;
+			}
+			button.active {
+				background: #e00;
+				color: #fff;
+			}
+			.red {
+				padding: 0 4px;
+				color: #e00;
+				font-size: 18px;
+				font-weight: 600;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<div class="label">假设您每天都能领到券，瑞幸<span class="red">￥9.9</span>，库迪<span class="red">￥8.8</span></div>
+			<div class="choose-label">请选择每天喝咖啡的频率</div>
+			<div class="choose-time">
+				<button class="active" onclick="chooseTime(1, this)">1天1杯</button>
+				<button onclick="chooseTime(2, this)">1天2杯</button>
+				<button onclick="chooseTime(3, this)">1天3杯</button>
+			</div>
+			<div class="count-btns">
+				<button class="active" onclick="calc(1,this)">1天</button>
+				<button onclick="calc(7, this)">1周</button>
+				<button onclick="calc(30,this)">1月</button>
+				<button onclick="calc(365,this)">1年</button>
+				<button onclick="calc(365*10, this)">10年</button>
+				<button onclick="calc(365*50, this)">50年</button>
+				<button onclick="calc(365*100, this)">100年</button>
+			</div>
+			<div class="content">
+				<div id="result">请点击按钮开始计算</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var times = 1
+		var x = {
+				name: '瑞幸',
+				englishName: 'LUCCKIN COFFEE',
+				value: 9.9
+			},
+			y = {
+				name: '库迪',
+				englishName: 'COTTI COFFEE',
+				value: 8.8
+			}
+		function chooseTime (count, e) {
+			times = count
+			$('.choose-time button').removeClass('active')
+			$(e).addClass('active')
+			_calc()
+		}
+		var count = 1
+		function calc(num, e) {
+			if (e) {
+				$('.count-btns button').removeClass('active')
+				$(e).addClass('active')
+			} 
+			count = num
+			_calc()
+		}
+		function _calc () {
+			let benefit = ((x.value * 100 - y.value * 100) * count) / 100
+			benefit = (benefit * times).toFixed(2)
+			const result = `<div>您会购买<span class="red">${count * times}</span>杯咖啡，<span class="red">${y.name}(${y.englishName})</span>比<span class="red">${x.name}(${x.englishName})</span>可以节省<span class="red">${benefit}</span>元, 这相当于<span class="red">${(benefit / x.value).toFixed(2)}杯${x.name},<span class="red">${(benefit / y.value).toFixed(2)}杯${y.name}</span></div>`
+			document.getElementById('result').innerHTML = result
+		}
+		calc(1)
+	</script>
+</html>
